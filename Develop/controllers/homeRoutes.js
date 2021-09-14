@@ -1,8 +1,9 @@
-const express = require("express");
-const logger = require("morgan");
+const router = require('express').Router();
+// const logger = require("morgan");
 const mongoose = require("mongoose");
+const db = require('../models')
 
-app.get("/workouts", (req, res) => {
+router.get("/workouts", (req, res) => {
   db.Workout.find({})
     .then(dbNote => {
       res.json(dbNote);
@@ -11,5 +12,16 @@ app.get("/workouts", (req, res) => {
       res.json(err);
     });
 });
+
+router.get("/stats", (req, res) => {
+  db.Workout.find({})
+    .then(dbNote => {
+      res.json(dbNote);
+    })
+    .catch(err => {
+      res.json(err);
+    });
+});
+
 
 module.exports = router;

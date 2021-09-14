@@ -1,18 +1,16 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-
+const routes = require('./controllers');
+const apiroutes = require('./controllers/api');
 const PORT = process.env.PORT || 3000;
-
-const db = require("./models");
-
 const app = express();
 
 app.use(logger("dev"));
-
+app.use(routes);
+app.use(apiroutes);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 app.use(express.static("public"));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { 
@@ -20,17 +18,6 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
     useFindAndModify: false,
     useUnifiedTopology: true,
  });
-
-
-app.get("/workouts", (req, res) => {
-  db.Workout.find({})
-    .then(dbNote => {
-      res.json(dbNote);
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
 
 
 app.listen(PORT, () => {
