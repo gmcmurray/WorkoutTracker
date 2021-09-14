@@ -22,31 +22,8 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
  });
 
 
-// db.Workout.create(
-//     {
-//         day: new Date(new Date().setDate(new Date().getDate() - 9)),
-//         exercises: [
-//           {
-//             type: 'resistance',
-//             name: 'Bicep Curl',
-//             duration: 20,
-//             weight: 100,
-//             reps: 10,
-//             sets: 4,
-//           },
-//         ],
-//       }
-
-// )
-//   .then(dbUser => {
-//     console.log(dbUser);
-//   })
-//   .catch(({ message }) => {
-//     console.log(message);
-//   });
-
-app.get("/notes", (req, res) => {
-  db.Note.find({})
+app.get("/workouts", (req, res) => {
+  db.Workout.find({})
     .then(dbNote => {
       res.json(dbNote);
     })
@@ -55,37 +32,6 @@ app.get("/notes", (req, res) => {
     });
 });
 
-// app.get("/user", (req, res) => {
-//   db.User.find({})
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
-
-// app.post("/submit", ({ body }, res) => {
-//   db.Note.create(body)
-//     .then(({ _id }) => db.User.findOneAndUpdate({}, { $push: { notes: _id } }, { new: true }))
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
-
-// app.get("/populateduser", (req, res) => {
-//   db.User.find({})
-//     .populate("notes")
-//     .then(dbUser => {
-//       res.json(dbUser);
-//     })
-//     .catch(err => {
-//       res.json(err);
-//     });
-// });
 
 app.listen(PORT, () => {
   console.log(`App running on port ${PORT}!`);

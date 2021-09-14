@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
-const opts = { toJSON:{virtual: true}};
-const Schema = mongoose.Schema;
+const opts = { toJSON:{virtuals: true}};
+// const workSchema = mongoose.Schema;
 
-const WorkOutSchema = new Schema({
+const WorkOutSchema = mongoose.Schema({
     day: {
         type: Date,
         default: Date.now,
@@ -24,6 +24,20 @@ const WorkOutSchema = new Schema({
     ]
 
 });
+
+WorkOutSchema.virtual('total').get(function() {
+    function averager(array){
+        if(array.length>0){
+            let sumel =0;
+            for (let index = 0; index < array.length; index++) {
+                sumel += array[index]/array.length;
+            }
+            return sumel;
+        }
+        else return 0;
+    }
+    return this.exercises.map(dev=> dev.duration).reduce(averager);
+  });
 
 // Virtual totalDuration - loop over all excersizes to tally all hours
 // search for to JSON
