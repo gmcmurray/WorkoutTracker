@@ -1,20 +1,35 @@
 const router = require('express').Router();
-// const mongoose = require("mongoose");
 const db = require('../../models')
 
-router.post("/workouts", (req, res) => {
   // matches createWorkout in api.js
-    db.Workout.create(req.body)
-    .then(({ _id }) => db.Workout.findOneAndUpdate({}))
-    .then(workout => {
-      res.json(workout);
-    })
-    .catch(err => {
-      res.json(err);
+router.post("/workouts", async (req, res) => {
+  try{
+  let doc = await  db.Workout.create(req.body);
+      res.json(doc);
+  }
+  catch (err) {
+    console.error(err)
+    res.status(500).json(err);
+  }
     });
-});
+ 
 
-router.get("/workouts", (req,res)=>{
+router.put("/workouts/:id", async (req, res) => {
+  // matches createWorkout in api.js
+  try{
+    let body = req.body;
+    let id = req.params.id;
+    const doc =  await db.Workout.findOneAndUpdate({_id : id}, { $push: { excersises: body } }, { new: true });
+    res.json(doc);
+  }
+  catch(err){
+    res.json(err);
+
+  }  
+    });
+ 
+
+router.get("/workouts/range", (req,res)=>{
     db.Workout.find({})
     .then(wkout => {
         res.json(wkout)
@@ -24,15 +39,33 @@ router.get("/workouts", (req,res)=>{
     });
 })
 
-router.get("/workouts/range", (req,res)=>{
-  db.Workout.find({})
+router.get("/workouts/:id", (req,res)=>{
+  let id = req.params.id;
+  db.Workout.find({_id:id})
   .then(wkout => {
       res.json(wkout)
   })
   .catch(err => {
-      res.json(err)
+      res.status(405).json(err)
   });
 })
+
+
+router.get("/workouts/range", async (req,res)=>{
+  try{
+    let doc = await db.Workout.find({}).sort({'day': 'desc'});
+    console.log(doc)
+    res.json(doc)
+
+  }
+  catch(err){
+    res.status(500).json(err)
+  }
+   
+  });
+ 
+
+
 
 router.put("/workouts/:id", (req, res) => {
     const {id: _id} = req.params ;

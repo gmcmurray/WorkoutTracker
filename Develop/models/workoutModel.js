@@ -23,20 +23,23 @@ const WorkOutSchema = mongoose.Schema({
         }
     ]
 
-});
+},opts);
 
-WorkOutSchema.virtual('total').get(function() {
-    function averager(array){
+WorkOutSchema.virtual('totalDuration').get(function() {
+    function summer(array){
         if(array.length>0){
             let sumel =0;
             for (let index = 0; index < array.length; index++) {
-                sumel += array[index]/array.length;
+                sumel += array[index];
             }
             return sumel;
         }
         else return 0;
     }
-    return this.exercises.map(dev=> dev.duration).reduce(averager);
+    let totald = this.exercises.map(dev => parseInt(dev.duration,10)).reduce(function(accumulator,currentValue){
+        return accumulator + currentValue;},0);
+    return totald
+    
   });
 
 // Virtual totalDuration - loop over all excersizes to tally all hours
