@@ -6,6 +6,7 @@ const apiroutes = require('./controllers/api');
 const PORT = process.env.PORT || 3000;
 const app = express();
 const db = require('./models')
+const path = require('path');
 
 app.use(logger("dev"));
 // app.use(routes);
@@ -34,6 +35,15 @@ app.get("/api/workouts/range", async (req, res) => {
   }
 });
 
+app.get("/excercise", async (req,res) =>{
+  // return /excersi
+res.sendFile(path.join(__dirname, '/public/exercise.html'));
+})
+
+app.get("/stats", async (req,res) =>{
+  res.sendFile(path.join(__dirname, '/public/stats.html'));
+})
+
 app.get("/api/workouts", async (req, res) => {
   try{
   let doc = await  db.Workout.find({});
@@ -56,6 +66,8 @@ app.post("/api/workouts", async (req, res) => {
     res.status(500).json(err);
   }
     });
+
+  
  
 // Add new excersize to workout
 app.put("/api/workouts/:id", async (req, res) => {

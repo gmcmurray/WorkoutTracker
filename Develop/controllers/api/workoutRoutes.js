@@ -2,7 +2,7 @@ const router = require('express').Router();
 const db = require('../../models')
 
   // matches createWorkout in api.js
-router.post("/workouts", async (req, res) => {
+router.post("/", async (req, res) => {
   try{
   let doc = await  db.Workout.create(req.body);
       res.json(doc);
@@ -14,7 +14,7 @@ router.post("/workouts", async (req, res) => {
     });
  
 
-router.put("/workouts/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   // matches createWorkout in api.js
   try{
     let body = req.body;
@@ -29,7 +29,7 @@ router.put("/workouts/:id", async (req, res) => {
     });
  
 
-router.get("/workouts/range", (req,res)=>{
+router.get("/range", (req,res)=>{
     db.Workout.find({})
     .then(wkout => {
         res.json(wkout)
