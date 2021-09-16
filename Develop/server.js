@@ -23,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 
 app.get("/api/workouts/range", async (req, res) => {
   try {
-    let doc = await db.Workout.find({}).sort({ "day": "descending" });
+    let doc = await db.Workout.find({}).sort({ "day": "ascending" });
     let seven = [];
     for (let index = 0; index < 7; index++) {
       seven.push(doc[index])
@@ -35,7 +35,7 @@ app.get("/api/workouts/range", async (req, res) => {
   }
 });
 
-app.get("/excercise", async (req,res) =>{
+app.get("/exercise", async (req,res) =>{
   // return /excersi
 res.sendFile(path.join(__dirname, '/public/exercise.html'));
 })
@@ -46,7 +46,7 @@ app.get("/stats", async (req,res) =>{
 
 app.get("/api/workouts", async (req, res) => {
   try{
-  let doc = await  db.Workout.find({});
+  let doc = await  db.Workout.find({}).sort({ "day": "ascending" });
       res.json(doc);
   }
   catch (err) {

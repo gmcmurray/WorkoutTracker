@@ -51,7 +51,7 @@ router.get("/workouts/:id", (req,res)=>{
 })
 
 
-router.get("/workouts/range", async (req,res)=>{
+router.get("/range", async (req,res)=>{
   try{
     let doc = await db.Workout.find({}).sort({'day': 'desc'});
     console.log(doc)
