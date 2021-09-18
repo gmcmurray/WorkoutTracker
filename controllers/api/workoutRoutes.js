@@ -23,6 +23,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/range", async (req, res) => {
+  try {
+    let doc = await db.Workout.find({}).sort({ "day": "descending" });
+    // let doc = await db.Workout.find({}).sort({ "day": "descending" });
+    let seven = [];
+    console.log('doc length',doc.length)
+    let sup = Math.min(7,doc.length)
+    for (let index = 0; index < sup; index++) {
+      seven.push(doc[index])
+    }
+    res.send(doc);
+  }
+  catch (err) {
+    res.status(500).json(err)
+  }
+});
+
 router.get("/:id", (req, res) => {
   let id = req.params.id;
   db.Workout.find({ _id: id })
@@ -59,5 +76,22 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+// router.get("/range", async (req, res) => {
+//   console.log("range route")
+//   try {
+//     let doc = await db.Workout.find({}).sort({ "day": -1 });
+//     // let doc = await db.Workout.find({}).sort({ "day": "descending" });
+//     let seven = [];
+//     console.log('doc length',doc.length)
+//     let sup = Math.min(7,doc.length)
+//     for (let index = 0; index < sup; index++) {
+//       seven.push(doc[index])
+//     }
+//     res.send(doc);
+//   }
+//   catch (err) {
+//     res.status(500).json(err)
+//   }
+// });
 
 module.exports = router
