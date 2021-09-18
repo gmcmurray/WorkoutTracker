@@ -35,7 +35,6 @@ router.get("/:id", (req, res) => {
 });
 
 router.put("/:id", async (req, res) => {
-  // matches createWorkout in api.js
   try {
     let body = req.body;
     let id = req.params.id;
@@ -60,18 +59,5 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-router.get("/range", async (req, res) => {
-  try {
-    let doc = await db.Workout.find({}).sort({ "day": "descending" });
-    let seven = [];
-    for (let index = 0; index < Math.min(7, doc.length); index++) {
-      seven.push(doc[index])
-    }
-    res.json(seven);
-  }
-  catch (err) {
-    res.status(500).json(err)
-  }
-});
 
 module.exports = router
