@@ -23,9 +23,9 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
 
 app.get("/api/workouts/range", async (req, res) => {
   try {
-    let doc = await db.Workout.find({}).sort({ "day": "ascending" });
+    let doc = await db.Workout.find({}).sort({ "day": "descending" });
     let seven = [];
-    for (let index = 0; index < 7; index++) {
+    for (let index = 0; index < Math.min(7,doc.length); index++) {
       seven.push(doc[index])
     }
     res.json(seven);
@@ -36,7 +36,6 @@ app.get("/api/workouts/range", async (req, res) => {
 });
 
 app.get("/exercise", async (req,res) =>{
-  // return /excersi
 res.sendFile(path.join(__dirname, '/public/exercise.html'));
 })
 
@@ -97,21 +96,6 @@ app.get("/api/workouts/:id", async (req,res)=>{
       
   });
  
-
-
-// app.put("/api/workouts/:id", (req, res) => {
-//     const {id: _id} = req.params ;
-//     const body = req.body;
-//     db.Workout.findOneAndUpdate(body)
-//       .then(({ _id }) => db.Workout.findOneAndUpdate({}, 
-//           { $push: { notes: _id } }, { new: true }))
-//       .then(dbUser => {
-//         res.json(dbUser);
-//       })
-//       .catch(err => {
-//         res.json(err);
-//       });
-//   });
 
 
 app.listen(PORT, () => {
