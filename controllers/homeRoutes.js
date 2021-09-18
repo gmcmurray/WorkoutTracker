@@ -1,27 +1,11 @@
 const router = require('express').Router();
-// const logger = require("morgan");
-const mongoose = require("mongoose");
-const db = require('../models')
 
-router.get("/workouts", (req, res) => {
-  db.Workout.find({})
-    .then(dbNote => {
-      res.json(dbNote);
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
+router.get("/exercise", async (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/exercise.html'));
+})
 
-router.get("/stats", (req, res) => {
-  db.Workout.find({})
-    .then(dbNote => {
-      res.json(dbNote);
-    })
-    .catch(err => {
-      res.json(err);
-    });
-});
-
+router.get("/stats", async (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/stats.html'));
+})
 
 module.exports = router;
