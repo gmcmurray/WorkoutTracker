@@ -30,7 +30,7 @@ router.put("/:id", async (req, res) => {
  
 
 router.get("/range", (req,res)=>{
-    db.Workout.find({})
+    db.Workout.find({}).sort({"day":-1}).limit(7)
     .then(wkout => {
         res.json(wkout)
     })
