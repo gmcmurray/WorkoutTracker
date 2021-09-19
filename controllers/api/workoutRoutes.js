@@ -25,13 +25,7 @@ router.post("/", async (req, res) => {
 
 router.get("/range", async (req, res) => {
   try {
-    let doc = await db.Workout.find({}).sort({ "day": "descending" });
-    let seven = [];
-    console.log('doc length',doc.length)
-    let sup = Math.min(7,doc.length)
-    for (let index = 0; index < sup; index++) {
-      seven.push(doc[index])
-    }
+    let doc = await db.Workout.find({}).sort({ "day": "descending" }).limit(7);
     res.send(doc);
   }
   catch (err) {
