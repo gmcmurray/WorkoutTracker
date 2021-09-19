@@ -1,85 +1,72 @@
 const router = require('express').Router();
 const db = require('../../models')
 
-  // matches createWorkout in api.js
-router.post("/", async (req, res) => {
-  try{
-  let doc = await  db.Workout.create(req.body);
-      res.json(doc);
+router.get("/", async (req, res) => {
+  try {
+    let doc = await db.Workout.find({}).sort({ "day": "ascending" });
+    res.json(doc);
   }
   catch (err) {
     console.error(err)
     res.status(500).json(err);
   }
-    });
- 
+});
 
-router.put("/:id", async (req, res) => {
-  // matches createWorkout in api.js
-  try{
-    let body = req.body;
-    let id = req.params.id;
-    const doc =  await db.Workout.findOneAndUpdate({_id : id}, { $push: { excersises: body } }, { new: true });
+router.post("/", async (req, res) => {
+  try {
+    let doc = await db.Workout.create(req.body);
     res.json(doc);
   }
-  catch(err){
-    res.json(err);
-
-  }  
-    });
- 
-
-router.get("/range", (req,res)=>{
-    db.Workout.find({}).sort({"day":-1}).limit(7)
-    .then(wkout => {
-        res.json(wkout)
-    })
-    .catch(err => {
-        res.json(err)
-    });
-})
-
-router.get("/workouts/:id", (req,res)=>{
-  let id = req.params.id;
-  db.Workout.find({_id:id})
-  .then(wkout => {
-      res.json(wkout)
-  })
-  .catch(err => {
-      res.status(405).json(err)
-  });
-})
-
-
-router.get("/range", async (req,res)=>{
-  try{
-    let doc = await db.Workout.find({}).sort({'day': 'desc'});
-    console.log(doc)
-    res.json(doc)
-
+  catch (err) {
+    console.error(err)
+    res.status(500).json(err);
   }
-  catch(err){
+});
+
+router.get("/range", async (req, res) => {
+  try {
+    let doc = await db.Workout.find({}).sort({ "day": -1}).limit(7);
+    res.send(doc);
+  }
+  catch (err) {
     res.status(500).json(err)
   }
-   
-  });
- 
+});
 
+router.get("/:id", (req, res) => {
+  let id = req.params.id;
+  db.Workout.find({ _id: id })
+    .then(wkout => {
+      res.json(wkout)
+    })
+    .catch(err => {
+      res.status(405).json(err)
+    });
+});
 
+router.put("/:id", async (req, res) => {
+  try {
+    let body = req.body;
+    let id = req.params.id;
+    const doc = await db.Workout.findOneAndUpdate({ _id: id }, { $push: { excersises: body } }, { new: true });
+    res.json(doc);
+  }
+  catch (err) {
+    res.json(err);
 
-router.put("/workouts/:id", (req, res) => {
-    const {id: _id} = req.params ;
-    const body = req.body;
-    db.Workout.findOneAndUpdate(body)
-      .then(({ _id }) => db.Workout.findOneAndUpdate({}, 
-          { $push: { notes: _id } }, { new: true }))
-      .then(dbUser => {
-        res.json(dbUser);
-      })
-      .catch(err => {
-        res.json(err);
-      });
-  });
+  }
+});
 
+router.delete("/:id", async (req, res) => {
+  try {
+    let id = req.params.id;
+    let wkout = await db.Workout.deleteOne({ _id: id })
 
-  module.exports = router
+    res.json(wkout)
+  }
+  catch (err) {
+    res.status(405).json(err)
+  }
+});
+
+module.exports = router

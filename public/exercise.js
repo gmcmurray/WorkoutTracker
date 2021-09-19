@@ -85,7 +85,6 @@ function validateInputs() {
       isValid = false;
     }
   }
-
   if (isValid) {
     completeButton.removeAttribute("disabled");
     addButton.removeAttribute("disabled");
