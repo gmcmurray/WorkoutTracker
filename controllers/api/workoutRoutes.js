@@ -3,7 +3,7 @@ const db = require('../../models')
 
 router.get("/", async (req, res) => {
   try {
-    let doc = await db.Workout.find({}).sort({ "day": "ascending" });
+    let doc = await db.Workout.find({}).sort({ "day": 1 });
     res.json(doc);
   }
   catch (err) {
